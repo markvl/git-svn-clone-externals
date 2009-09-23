@@ -1,6 +1,10 @@
 #!/bin/bash
-
+#set -o verbose
 set -e
+
+if [ ! -d .git ]; then
+	git svn clone $@
+fi
 
 toplevel_directory="$(git rev-parse --show-cdup)"
 [ -n "$toplevel_directory" ] && { echo "please run from the toplevel directory"; exit 1; }
@@ -14,14 +18,23 @@ function call()
 	return "$?"
 }
 
+
+
 function do_clone()
 {
 	test -d .git_externals || return 1
 	module=`echo $remote_url|sed 's,\(.*\)\(/trunk\|/branch.*\|/tag.*\),\1,'`
 	branch=`echo $remote_url|sed 's,\(.*\)\(/trunk\|/branch.*\|/tag.*\),\2,'|sed 's,^/,,'`
+
+	#if the module has trunk in it, but is not the whole module, then dont keep versions...
+	if [ `dirname $remote_url` != "$module" ]; then
+		branch=""
+		module="$remote_url"
+	fi
 	if [[ $branch = $remote_url ]]; then
 		branch=""
 	fi
+	
  	(
 		cd .git_externals
 		if [ -d "$local_directory" ]; then
@@ -82,6 +95,14 @@ function do_excludes()
 	fi
 }
 
+if [ ! -d ".git_externals/" ]; then 
+	mkdir -p ".git_externals"; 
+fi
+if [ -f ".git_externals/.externals" ]; then 
+	rm ".git_externals/.externals" 
+fi
+touch ".git_externals/.externals"
+
 
 git svn show-externals|grep -vE '#|^$'|while read -a words
 do
@@ -114,6 +135,7 @@ do
 	do_clone "$revision" "$remote_url" "$local_directory" || exit
 	do_link "$local_directory"
 	do_excludes "$local_directory"
+	echo $local_directory >> ".git_externals/.externals"
 
 done
 

@@ -1,3 +1,33 @@
+Andre and Mark did some interesting work on this, but I wanted something a little
+more familiar to git. I did a few modifications on their work and now we have:
+
+git-ext-svn-clone:      was git-svn-clone-externals, but with a few bug fixes.
+												a file called .git_externals/.externals contains a list
+												of externals for easy traversal
+
+#svn commands:
+git-ext-svn-dcommit			loop through externals and call svn dcommit (arguments are 
+												passed along
+git-ext-svn-rebase			loop through externals and call svn rebase (arguments are 
+												passed along
+git-ext-svn-fetch  			loop through externals and call svn fetch (arguments are 
+												passed along
+
+#normal git commands:
+git-ext-branch:					loop through externals and call branch (arguments are 
+												passed along
+git-ext-status:     		loop throug externals and call status (arguments are 
+												passed along
+git-ext-commit:     		loop throug externals and call commit (arguments are 
+												passed along
+git-ext-checkout:    		loop throug externals and call commit (arguments are 
+												passed along
+git-ext-checkout:    		loop throug externals and call commit (arguments are 
+												passed along
+git-ext-stash:    		  loop throug externals and call stash (arguments are 
+												passed along
+												
+
 git-svn-clone-externals
 =======================
 

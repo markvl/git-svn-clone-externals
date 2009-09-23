@@ -1,0 +1,16 @@
+#!/bin/bash
+echo '>>>>>>>>>>>>>>>>' `pwd` '<<<<<<<<<<<<<<<<'
+git stash $@
+if [ -d ".git_externals" ]; then
+	extPWD=`pwd`
+	for dir in `cat .git_externals/.externals`; do
+		if [ -d $extPWD/$dir ]; then
+			cd $extPWD/$dir
+			bash $0 $@
+		else
+			echo '>>>>>>>>>>>>>>>>' $extPWD/$dir '<<<<<<<<<<<<<<<<'
+			echo "# location not found: $extPWD/$dir"
+		fi
+	done
+fi
+
