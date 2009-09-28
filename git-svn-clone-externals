@@ -110,12 +110,17 @@ do
 
 	local_directory="$(echo ${words[0]}|sed 's,^/,,')"
 	revision=""
-	remote_url="${words[1]}"
-
-	if [ -n "${words[2]}" ]; then
-		revision="${words[1]}"
-		remote_url="${words[2]}"
-	fi
+	
+	I=1
+	while [ "${words[I]}" != "" ]; do
+		if [ ${words[I]} == "-r" ]; then
+			I=$((I+1))
+			revision="${words[I]}"
+		else
+			remote_url="${words[I]}"
+		fi
+		I=$((I+1))
+	done
 
     if [ -n "$USE_SSH" ]; then
         echo "Rewriting url to use SVN+SSH."
