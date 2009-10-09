@@ -115,7 +115,7 @@ do
 	while [ "${words[I]}" != "" ]; do
 		if [ ${words[I]} == "-r" ]; then
 			I=$((I+1))
-			revision="${words[I]}"
+			revision="-r ${words[I]}"
 		else
 			remote_url="${words[I]}"
 		fi
