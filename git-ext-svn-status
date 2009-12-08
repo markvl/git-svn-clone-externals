@@ -1,0 +1,25 @@
+#!/bin/bash
+echo '>>>>>>>>>>>>>>>>' `pwd` '<<<<<<<<<<<<<<<<'
+STATUS=$(git status)
+UNPUSHED=$(git-svn-check-unpushed)
+if [ $(echo $STATUS|grep -c "clean") -lt 1 -o \
+	$(echo $UNPUSHED|grep -c "No unpushed") -lt 1 ]; then
+	git status
+	git-svn-check-unpushed
+else
+	echo $dir 'is clean'
+fi
+
+if [ -d ".git_externals" ]; then
+	extPWD=`pwd`
+	for dir in `cat .git_externals/.externals`; do
+		if [ -d $extPWD/$dir ]; then
+			cd $extPWD/$dir
+			bash $0
+		else
+			echo '>>>>>>>>>>>>>>>>' $extPWD/$dir '<<<<<<<<<<<<<<<<'
+			echo "# location not found: $extPWD/$dir"
+		fi
+	done
+fi
+

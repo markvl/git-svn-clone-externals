@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#git stash
+#git checkout $1
+
+#git show list| to
+#grep 
+
+STASH="`git stash list 2>&1|grep hyper8v3|head --lines=1`"
+echo $STASH
+
