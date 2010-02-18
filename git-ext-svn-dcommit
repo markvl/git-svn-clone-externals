@@ -1,6 +1,6 @@
 #!/bin/bash
 echo '>>>>>>>>>>>>>>>>' `pwd` '<<<<<<<<<<<<<<<<'
-git branch $@
+git svn dcommit $@
 if [ -d ".git_externals" ]; then
 	extPWD=`pwd`
 	for dir in `cat .git_externals/.externals`; do
